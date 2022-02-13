@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList, SafeAreaView
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 
-const Home = () => {
+const Home = ({ navigation }) => {
     // Dummy Datas
 
     const initialCurrentLocation = {
@@ -332,7 +332,17 @@ const Home = () => {
         // Filter Restaurant
         let restaurantList = restaurantData.filter(a => a.categories.includes(category.id));
         setRestaurants(restaurantList);
-        setCategories(category);
+        setSelectedCategory(category);
+    }
+
+    function getCategoryById(categoryId) {
+        let category = categoryData.filter(a => a.id == categoryId)
+
+        if (category.length > 0) {
+            return category[0].name;
+        }
+
+        return "";
     }
 
     function renderHeader() {
@@ -397,7 +407,7 @@ const Home = () => {
                     style={{
                         padding: SIZES.padding,
                         paddingBottom: SIZES.padding * 2,
-                        backgroundColor: COLORS.primary,
+                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.primary : COLORS.white,
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: SIZES.radius,
@@ -412,7 +422,7 @@ const Home = () => {
                             alignItems: "center",
                             justifyContent: "center",
                             borderRadius: SIZES.radius,
-                            backgroundColor: COLORS.white,
+                            backgroundColor: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.lightGray,
                             width: 50,
                             height: 50,
                         }}
@@ -429,7 +439,7 @@ const Home = () => {
 
                     <Text style={{
                         marginTop: SIZES.padding,
-                        color: COLORS.white,
+                        color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
                         ...FONTS.body5
                     }}
                     >
@@ -457,10 +467,124 @@ const Home = () => {
         )
     }
 
+    function renderRestaurantList() {
+        const renderItem = ({ item }) => {
+            return (
+                <TouchableOpacity
+                    style={{
+                        marginBottom: SIZES.padding * 2,
+                    }}
+                    onPress={() => navigation.navigate("Restaurant", {
+                        item,
+                        currentLocation
+                    })}
+                >
+                    <View style={{ marginBottom: SIZES.padding }}>
+                        <Image
+                            source={item.photo}
+                            resizeMode="cover"
+                            style={{
+                                width: '100%',
+                                height: 200,
+                                borderRadius: SIZES.radius
+                            }}
+                        />
+                        <View
+                            style={{
+                                position: "absolute",
+                                bottom: 0,
+                                height: 50,
+                                width: SIZES.width * 0.3,
+                                backgroundColor: COLORS.white,
+                                borderTopRightRadius: SIZES.radius,
+                                borderBottomLeftRadius: SIZES.radius,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                ...styles.shadow,
+                            }}
+                        >
+                            <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
+                        </View>
+                    </View>
+                    {/* Restaurant Info */}
+
+                    <Text style={{ ...FONTS.body2 }} >{item.name}</Text>
+                    <View
+                        style={{
+                            marginTop: SIZES.padding,
+                            flexDirection: "row",
+                            alignItems: "center"
+                        }}
+                    >
+                        {/* rating */}
+                        <Image
+                            source={icons.star}
+                            style={{
+                                height: 20,
+                                width: 20,
+                                marginRight: 10,
+                                tintColor: COLORS.primary
+                            }}
+                        />
+                        <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
+                        {/* categories */}
+                        <View
+                            style={{
+                                marginLeft: SIZES.padding,
+                                flexDirection: "row",
+                                alignItems: "center"
+                            }}
+                        >
+                            {item.categories.map((categoryId) => {
+                                return (
+                                    <View
+                                        style={{ flexDirection: "row", }}
+                                        key={categoryId}
+                                    >
+                                        <Text style={{ ...FONTS.body3 }}>{getCategoryById(categoryId)}</Text>
+                                        <Text style={{ ...FONTS.body3, color: COLORS.darkgray }}>.</Text>
+                                    </View>
+                                )
+                            })}
+                        </View>
+                        {/* price */}
+                        {
+                            [1, 2, 3].map((priceRating) => {
+                                return (
+                                    <Text
+                                        key={priceRating}
+                                        style={{
+                                            ...FONTS.body3,
+                                            color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray,
+                                        }}
+                                    >$</Text>
+                                )
+                            })
+                        }
+                    </View>
+
+                </TouchableOpacity>
+            )
+        }
+
+        return (
+            <FlatList
+                data={restaurants}
+                keyExtractor={(item) => `${item.id}`}
+                renderItem={renderItem}
+                contentContainerStyle={{
+                    paddingHorizontal: SIZES.padding * 2,
+                    paddingBottom: 60
+                }}
+            />
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderMainCategories()}
+            {renderRestaurantList()}
         </SafeAreaView>
     )
 }
