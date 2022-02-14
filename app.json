@@ -17,13 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier ": "com.minhtrang.fooddelivery",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBv3CsC4r-pIrxuNtUoxiWPheioiFhyPzw"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.minhtrang.fooddelivery"
     },
     "web": {
       "favicon": "./assets/favicon.png"
