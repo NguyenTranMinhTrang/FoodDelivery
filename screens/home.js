@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList, SafeAreaView } from "react-native";
-import { icons, images, SIZES, COLORS, FONTS } from '../constants'
+import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
 
 const Home = ({ navigation }) => {
