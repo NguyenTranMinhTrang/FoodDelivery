@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native"
-import { Home, Restaurant, OrderDilivery } from "./screens/index";
+import { Home, Restaurant, OrderDelivery } from "./screens/index";
 import Tabs from "./navigation/tabs";
 import { useFonts } from 'expo-font';
 import AppLoading from "expo-app-loading";
@@ -31,7 +31,7 @@ const App = () => {
       >
         <Stack.Screen name="Home" component={Tabs} />
         <Stack.Screen name="Restaurant" component={Restaurant} />
-        <Stack.Screen name="OrderDilivery" component={OrderDilivery} />
+        <Stack.Screen name="OrderDelivery" component={OrderDelivery} />
       </Stack.Navigator>
     </NavigationContainer>
   )

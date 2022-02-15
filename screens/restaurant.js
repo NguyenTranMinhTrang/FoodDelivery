@@ -5,15 +5,16 @@ import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
 
 const Restaurant = ({ route, navigation }) => {
+
     const scrollX = new Animated.Value(0);
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItem, setOrderItem] = React.useState([]);
 
     React.useEffect(() => {
-        let { item, location } = route.params;
-        setRestaurant(item);
-        setCurrentLocation(location);
+        let { item, currentLocation } = route.params;
+        setRestaurant(item)
+        setCurrentLocation(currentLocation)
     });
 
     function editOrder(action, menuId, price) {
@@ -372,9 +373,9 @@ const Restaurant = ({ route, navigation }) => {
                                 borderRadius: SIZES.radius
                             }}
 
-                            onPress={() => navigation.navigate("OrderDilivery", {
-                                restaurant,
-                                currentLocation
+                            onPress={() => navigation.navigate("OrderDelivery", {
+                                currentLocation: currentLocation,
+                                restaurant: restaurant,
                             })}
                         >
                             <Text style={{ ...FONTS.h2, color: COLORS.white }}>Order</Text>
